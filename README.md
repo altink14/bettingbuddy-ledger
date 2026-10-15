@@ -70,3 +70,25 @@ pulled from this repository would expose that.
 Published automatically by Betting Buddy's daily and hourly jobs
 (`publish_commitments.py`), which refuse to write anything if this file and
 Betting Buddy's own record ever disagree.
+
+## How the record is judged
+
+`nba/EVALUATION_PLAN_v1.md` fixes, before the first game of the 2026-27
+season, how the live record is measured: which picks count, the windows, the
+yardsticks the model is compared with (including the betting market's own
+favorite), probability scores, calibration, closing-line value, profit at one
+unit a pick, and the rule for when Betting Buddy may say the model is "ahead"
+or "behind". Like the commitments, it is never edited; a change would be a new,
+dated file that applies only to later games.
+
+`nba/audit/reconcile_live_record.py` recomputes every figure from the plan
+alone. It was written separately from Betting Buddy's own code, and the two
+must agree on every number. It needs only Python's standard library (on
+Windows, `pip install tzdata` for the time zone database). It runs on the picks
+Betting Buddy's public API serves once each game has started:
+
+    python nba/audit/reconcile_live_record.py --ledger-json "https://nba-machine-learning-sports-betting-production-499f.up.railway.app/api/prediction-log?season=2026-27"
+
+Without the league's game log it says which figures it could not compute (the
+better-record yardstick, and the game ids of games graded from ESPN's score).
+`nba/audit/OUTPUT.md` describes what it prints.
