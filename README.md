@@ -32,12 +32,16 @@ pulled from this repository would expose that.
 
 ## How to verify a day yourself
 
-1. Sign in to Betting Buddy (a free account) and open **Track Record**. Its
-   **Verify it yourself** panel recomputes every revealed commitment in your
-   browser and compares it with these hashes.
-2. Or do it by hand. Once a day's games have tipped off, Betting Buddy's API
-   (`GET /api/ledger/commitments`) reveals each commitment's `nonce` and its
-   picks. The recipe, `bb-ledger-commit-v1`:
+1. Open the **Track Record** at https://bettingbuddy.net/track-record. It is
+   public, with no account needed. Its **Verify it yourself** panel recomputes
+   every revealed commitment in your browser and compares it with these hashes.
+2. Or do it by hand. Once a day's games have tipped off, Betting Buddy's public
+   API reveals each commitment's `nonce` and its picks:
+
+       https://nba-machine-learning-sports-betting-production-499f.up.railway.app/api/ledger/commitments
+
+   (`?days=N` sets how far back it reaches; the default is 120 days.) The
+   recipe, `bb-ledger-commit-v1`:
 
    - Each pick becomes a JSON array of exactly these fields, rows in ascending
      `id` order:
